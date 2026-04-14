@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentor index{% endblock %}
+
+{% block body %}
+    <h1>Mentor index</h1>
+
+    <table class="table">
+        
+        <tbody>
+        {% for mentor in mentors %}
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Profession</th>
+                    <th>Bio</th>
+                    <th>Disponibilite</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>{{ mentor.id }}</td>
+                <td>{{ mentor.profession }}</td>
+                <td>{{ mentor.bio }}</td>
+                <td>{{ mentor.disponibilite }}</td>
+                <td>
+                    <a href="{{ path('app_mentor_control_show', {'id': mentor.id}) }}">show</a>
+                    <a href="{{ path('app_mentor_control_edit', {'id': mentor.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mentor_control_new') }}">Create new</a>
+{% endblock %}

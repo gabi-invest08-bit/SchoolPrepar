@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - SchoolPrepar{% endblock %}
+
+{% block body %}
+<h1>Bienvenue sur SchoolPrepar 🎓</h1>
+<p>Plateforme de préparation scolaire</p>
+
+<div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 30px;">
+    <a href="{{ path('app_filiere_control_index') }}" class="btn btn-primary">Gérer les Filières</a>
+    <a href="{{ path('app_etablissement_contol_index') }}" class="btn btn-success">Gérer les Établissements</a>
+    <a href="{{ path('app_user_control_index') }}" class="btn btn-secondary">Gérer les Utulisateurs</a>
+    <a href="{{ path('app_mentor_control_index') }}" class="btn btn-warning">Gérer les Mentors</a>
+    <a href="{{ path('app_rendez_vous_control_index') }}" class="btn btn-info">Gérer les Rendez-vous</a>
+    <a href="{{ path('app_message_control_index') }}" class="btn btn-danger">Gérer les Messages</a>
+</div>
+{% endblock %}
+

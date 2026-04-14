@@ -3,15 +3,35 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
+
+    
+
     <body>
+        <header >
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">    
+                <div class="container">
+                    <a class="navbar-brand" href="/">SchoolPrepar</a>
+                    <div class="collapse navbar-collapse">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_filiere_control_index') }}">Filières</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_etablissement_contol_index') }}">Établissement</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_mentor_control_index') }}">Mentors</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_user_control_index') }}">Utulisateur</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_rendez_vous_control_index') }}">Rendez-vous</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_message_control_index') }}">Messages</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
         {% block body %}{% endblock %}
     </body>
 </html>

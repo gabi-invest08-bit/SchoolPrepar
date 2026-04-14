@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentor{% endblock %}
+
+{% block body %}
+    <h1>Mentor</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ mentor.id }}</td>
+            </tr>
+            <tr>
+                <th>Profession</th>
+                <td>{{ mentor.profession }}</td>
+            </tr>
+            <tr>
+                <th>Bio</th>
+                <td>{{ mentor.bio }}</td>
+            </tr>
+            <tr>
+                <th>Disponibilite</th>
+                <td>{{ mentor.disponibilite }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mentor_control_index') }}">back to list</a>
+
+    <a href="{{ path('app_mentor_control_edit', {'id': mentor.id}) }}">edit</a>
+
+    {{ include('mentor_control/_delete_form.html.twig') }}
+{% endblock %}

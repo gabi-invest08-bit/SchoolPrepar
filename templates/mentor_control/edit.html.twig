@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Mentor{% endblock %}
+
+{% block body %}
+    <h1>Edit Mentor</h1>
+
+    {{ include('mentor_control/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_mentor_control_index') }}">back to list</a>
+
+    {{ include('mentor_control/_delete_form.html.twig') }}
+{% endblock %}
