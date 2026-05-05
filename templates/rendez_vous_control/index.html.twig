@@ -1,38 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}RendezVous index{% endblock %}
+{% block title %}Rendez-vous - {{ rendezVous|length }} planifiés{% endblock %}
 
 {% block body %}
-    <h1>RendezVous index</h1>
+<section class=\"section main-banner\" style=\"background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ asset('assets/images/contact-bg.jpg') }}');\">
+  <div class=\"video-overlay header-text\">
+    <div class=\"caption\">
+      <h6>SchoolPrepar</h6>
+      <h2><em>{{ rendezVous|length }}</em> Rendez-vous</h2>
+      <div class=\"main-button\">
+        <a href=\"{{ path('app_rendez_vous_control_new') }}\" class=\"btn btn-primary\">Nouveau RDV</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <table class="table">
-        
-        <tbody>
-        {% for rendez_vou in rendez_vouses %}
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Date</th>
-                    <th>Statut</th>
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tr>
-                <td>{{ rendez_vou.id }}</td>
-                <td>{{ rendez_vou.date ? rendez_vou.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ rendez_vou.statut }}</td>
-                <td>
-                    <a href="{{ path('app_rendez_vous_control_show', {'id': rendez_vou.id}) }}">show</a>
-                    <a href="{{ path('app_rendez_vous_control_edit', {'id': rendez_vou.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
+<section class=\"section courses\">
+  <div class=\"container-fluid\">
+    <div class=\"row\">
+      <div class=\"col-md-12\">
+        <div class=\"section-heading\">
+          <h2>Gestion des Rendez-vous</h2>
+        </div>
+      </div>
+      {% if rendezVous|length > 0 %}
+      <div class=\"owl-carousel owl-theme\">
+        {% for rdv in rendezVous %}
+        <div class=\"item\">
+          <div class=\"down-content full-card\">
+            <h4 class=\"big-title\">RDV #{{ rdv.id }}</h4>
+            <p class=\"date\"><i class=\"fa fa-calendar\"></i> {{ rdv.date|date('d/m/Y H:i') }}</p>
+            <span class=\"statut-tag\">Statut: {{ rdv.statut|title }}</span>
+            <p>Élève: {{ rdv.eleve.prenom }} {{ rdv.eleve.nom }}</p>
+            <p>Mentor: {{ rdv.mentor.profession }}</p>
+            <div class=\"text-button-pay\">
+              <a href=\"{{ path('app_rendez_vous_control_show', {'id': rdv.id}) }}\">Détails</a>
+              <a href=\"{{ path('app_rendez_vous_control_edit', {'id': rdv.id}) }}\" class=\"btn btn-sm btn-warning ms-2\">Éditer</a>
+            </div>
+          </div>
+        </div>
         {% endfor %}
-        </tbody>
-    </table>
+      </div>
+      {% else %}
+      <div class=\"col-md-12 text-center py-5\">
+        <h3>Aucun rendez-vous planifié</h3>
+        <a href=\"{{ path('app_rendez_vous_control_new') }}\" class=\"btn btn-primary\">Planifier le premier</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
 
-    <a href="{{ path('app_rendez_vous_control_new') }}">Create new</a>
+<style>
+.full-card { padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); min-height: 300px; }
+.big-title { font-size: 1.8em; margin-bottom: 15px; color: #333; }
+.date { font-size: 1.2em; color: #666; margin-bottom: 15px; }
+.statut-tag { color: #ffc107; font-weight: bold; background: #fff3cd; padding: 5px 12px; border-radius: 20px; display: inline-block; margin-bottom: 15px; }
+</style>
+
+<link rel=\"stylesheet\" href=\"{{ asset('assets/css/owl.css') }}\">
+<script src=\"{{ asset('assets/js/owl-carousel.js') }}\"></script>
+<script>
+$(document).ready(function(){
+  $(\".owl-carousel\").owlCarousel({
+    items: 3,
+    loop: true,
+    margin: 20,
+    nav: true
+  });
+});
+</script>
 {% endblock %}

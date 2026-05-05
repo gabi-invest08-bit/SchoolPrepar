@@ -1,45 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}Utilisateurs - {{ users|length }} inscrits{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+<section class=\"section main-banner\" style=\"background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ asset('assets/images/coming-soon-bg.jpg') }}');\">
+  <div class=\"video-overlay header-text\">
+    <div class=\"caption\">
+      <h6>SchoolPrepar</h6>
+      <h2><em>{{ users|length }}</em> Utilisateurs</h2>
+      <div class=\"main-button\">
+        <a href=\"{{ path('app_user_control_new') }}\" class=\"btn btn-primary\">Nouvel Utilisateur</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Password</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Type</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+<section class=\"section courses\">
+  <div class=\"container-fluid\">
+    <div class=\"row\">
+      <div class=\"col-md-12\">
+        <div class=\"section-heading\">
+          <h2>Gestion des Utilisateurs</h2>
+        </div>
+      </div>
+      {% if users|length > 0 %}
+      <div class=\"owl-carousel owl-theme\">
         {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.nom }}</td>
-                <td>{{ user.prenom }}</td>
-                <td>{{ user.type }}</td>
-                <td>
-                    <a href="{{ path('app_user_control_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_control_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
+        <div class=\"item\">
+          <div class=\"down-content full-card\">
+            <h4 class=\"big-title\">{{ user.prenom }} {{ user.nom }}</h4>
+            <p class=\"email\"><i class=\"fa fa-envelope\"></i> {{ user.email }}</p>
+            <span class=\"type-tag\">Type: {{ user.type|title }}</span>
+            {% if user.mentor %}
+            <span class=\"mentor-link\">Mentor associé</span>
+            {% endif %}
+            <div class=\"text-button-pay\">
+              <a href=\"{{ path('app_user_control_show', {'id': user.id}) }}\">Détails</a>
+              <a href=\"{{ path('app_user_control_edit', {'id': user.id}) }}\" class=\"btn btn-sm btn-warning ms-2\">Éditer</a>
+            </div>
+          </div>
+        </div>
         {% endfor %}
-        </tbody>
-    </table>
+      </div>
+      {% else %}
+      <div class=\"col-md-12 text-center py-5\">
+        <h3>Aucun utilisateur inscrit</h3>
+        <a href=\"{{ path('app_user_control_new') }}\" class=\"btn btn-primary\">Créer le premier</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
 
-    <a href="{{ path('app_user_control_new') }}">Create new</a>
+<style>
+.full-card { padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); min-height: 300px; }
+.big-title { font-size: 2em; margin-bottom: 15px; color: #333; }
+.email { font-size: 1.1em; color: #666; margin-bottom: 10px; }
+.type-tag { color: #17a2b8; font-weight: bold; background: #d1ecf1; padding: 5px 12px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+.mentor-link { color: #28a745; font-weight: bold; }
+</style>
+
+<link rel=\"stylesheet\" href=\"{{ asset('assets/css/owl.css') }}\">
+<script src=\"{{ asset('assets/js/owl-carousel.js') }}\"></script>
+<script>
+$(document).ready(function(){
+  $(\".owl-carousel\").owlCarousel({
+    items: 3,
+    loop: true,
+    margin: 20,
+    nav: true
+  });
+});
+</script>
 {% endblock %}

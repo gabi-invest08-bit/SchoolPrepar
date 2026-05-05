@@ -1,38 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Message index{% endblock %}
+{% block title %}Messages - {{ messages|length }} échanges{% endblock %}
 
 {% block body %}
-    <h1>Message index</h1>
+<section class=\"section main-banner\" style=\"background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ asset('assets/images/contact-bg.jpg') }}');\">
+  <div class=\"video-overlay header-text\">
+    <div class=\"caption\">
+      <h6>SchoolPrepar</h6>
+      <h2><em>{{ messages|length }}</em> Messages</h2>
+      <div class=\"main-button\">
+        <a href=\"{{ path('app_message_control_new') }}\" class=\"btn btn-primary\">Nouveau Message</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <table class="table">
-        
-        <tbody>
+<section class=\"section courses\">
+  <div class=\"container-fluid\">
+    <div class=\"row\">
+      <div class=\"col-md-12\">
+        <div class=\"section-heading\">
+          <h2>Gestion des Messages</h2>
+        </div>
+      </div>
+      {% if messages|length > 0 %}
+      <div class=\"owl-carousel owl-theme\">
         {% for message in messages %}
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Contenu</th>
-                    <th>Date</th>
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tr>
-                <td>{{ message.id }}</td>
-                <td>{{ message.contenu }}</td>
-                <td>{{ message.date ? message.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_message_control_show', {'id': message.id}) }}">show</a>
-                    <a href="{{ path('app_message_control_edit', {'id': message.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
+        <div class=\"item\">
+          <div class=\"down-content full-card\">
+            <h4 class=\"big-title\">Message #{{ message.id }}</h4>
+            <p class=\"date\"><i class=\"fa fa-clock\"></i> {{ message.date|ago }}</p>
+            <p><strong>{{ message.expediteur.prenom }} {{ message.expediteur.nom }}</strong> → <strong>{{ message.destinataire.prenom }} {{ message.destinataire.nom }}</strong></p>
+            <p class=\"contenu\">{{ message.contenu|slice(0, 120) ~ '...' }}</p>
+            <div class=\"text-button-pay\">
+              <a href=\"{{ path('app_message_control_show', {'id': message.id}) }}\">Lire</a>
+              <a href=\"{{ path('app_message_control_edit', {'id': message.id}) }}\" class=\"btn btn-sm btn-warning ms-2\">Éditer</a>
+            </div>
+          </div>
+        </div>
         {% endfor %}
-        </tbody>
-    </table>
+      </div>
+      {% else %}
+      <div class=\"col-md-12 text-center py-5\">
+        <h3>Aucun message</h3>
+        <a href=\"{{ path('app_message_control_new') }}\" class=\"btn btn-primary\">Envoyer le premier</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
 
-    <a href="{{ path('app_message_control_new') }}">Create new</a>
+<style>
+.full-card { padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); min-height: 320px; }
+.big-title { font-size: 1.8em; margin-bottom: 15px; color: #333; }
+.date { font-size: 1em; color: #999; margin-bottom: 10px; font-style: italic; }
+.contenu { font-size: 1.1em; color: #555; line-height: 1.4; margin-bottom: 15px; }
+</style>
+
+<link rel=\"stylesheet\" href=\"{{ asset('assets/css/owl.css') }}\">
+<script src=\"{{ asset('assets/js/owl-carousel.js') }}\"></script>
+<script>
+$(document).ready(function(){
+  $(\".owl-carousel\").owlCarousel({
+    items: 3,
+    loop: true,
+    margin: 20,
+    nav: true
+  });
+});
+</script>
 {% endblock %}

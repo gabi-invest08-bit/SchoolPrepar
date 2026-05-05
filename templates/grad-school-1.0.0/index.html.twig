@@ -8,7 +8,7 @@
   <meta name="author" content="">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 
-  <title>Grad School</title>
+  <title>SchoolPrepar</title>
 
   {# Bootstrap via CDN (les fichiers vendor ne sont pas dans public/) #}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,24 +25,17 @@
   <!-- ===== HEADER ===== -->
   <header class="main-header clearfix" role="header">
     <div class="logo">
-      <a href="#top"><em>Grad</em> School</a>
+      <a href="#top"><em>School</em> Prepar</a>
     </div>
     <a href="#menu" class="menu-link"><i class="fa fa-bars"></i></a>
     <nav id="menu" class="main-nav" role="navigation">
       <ul class="main-menu">
         <li><a href="#section1">Home</a></li>
-        <li class="has-submenu"><a href="#section2">About Us</a>
-          <ul class="sub-menu">
-            <li><a href="#section2">Who we are?</a></li>
-            <li><a href="#section3">What we do?</a></li>
-            <li><a href="#section3">How it works?</a></li>
-          </ul>
-        </li>
+        <li><a href="#section2">About Us</a></li>
         <li><a href="#section4">Courses</a></li>
+        <li><a href="#section4b">Establishments</a></li>
+        <li><a href="#section5">Mentors</a></li>
         <li><a href="#section6">Contact</a></li>
-        {# Liens vers les modules internes de SchoolPrepar #}
-        <li><a href="{{ path('app_filiere_control_index') }}" class="external">Filières</a></li>
-        <li><a href="{{ path('app_etablissement_contol_index') }}" class="external">Établissements</a></li>
       </ul>
     </nav>
   </header>
@@ -72,7 +65,7 @@
           <div class="features-post">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa fa-pencil"></i> All Courses</h4>
+<h4><i class="fa fa-pencil"></i> {{ stats.filieresCount }} Filières</h4>
               </div>
               <div class="content-hide">
                 <p>Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a posuere imperdiet. Donec maximus elementum ex. Cras convallis ex rhoncus, laoreet libero eu, vehicula libero.</p>
@@ -86,7 +79,7 @@
           <div class="features-post second-features">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa fa-graduation-cap"></i> Virtual Class</h4>
+<h4><i class="fa fa-graduation-cap"></i> {{ stats.etablissementsCount }} Établissements</h4>
               </div>
               <div class="content-hide">
                 <p>Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a posuere imperdiet. Donec maximus elementum ex. Cras convallis ex rhoncus, laoreet libero eu, vehicula libero.</p>
@@ -100,7 +93,7 @@
           <div class="features-post third-features">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa fa-book"></i> Real Meeting</h4>
+<h4><i class="fa fa-book"></i> {{ stats.mentorsCount }} Mentors</h4>
               </div>
               <div class="content-hide">
                 <p>Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a posuere imperdiet. Donec maximus elementum ex. Cras convallis ex rhoncus, laoreet libero eu, vehicula libero.</p>
@@ -120,7 +113,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="section-heading">
-            <h2>Why choose Grad School?</h2>
+            <h2>Why choose SchoolPrepar?</h2>
           </div>
         </div>
         <div class="col-md-12">
@@ -134,34 +127,60 @@
               <article id="tabs-1">
                 <div class="row">
                   <div class="col-md-6">
-                    <img src="{{ asset('assets/images/choose-us-image-01.png') }}" alt="Best Education">
+                    <img src="{{ asset('assets/images/choose-us-image-01.png') }}" alt="Nos Établissements">
                   </div>
                   <div class="col-md-6">
-                    <h4>Best Education</h4>
-                    <p>SchoolPrepar est une plateforme de préparation scolaire permettant aux étudiants de trouver les meilleures filières et établissements. Découvrez nos mentors et prenez rendez-vous facilement.</p>
+                    <h4>Nos Établissements</h4>
+                    <p>{{ stats.etablissementsCount }} établissements disponibles.</p>
+                    {% if etablissements %}
+                    <ul>
+                    {% for etablissement in etablissements %}
+                      <li>{{ etablissement.nom }} - {{ etablissement.ville }} ({{ etablissement.pays }})</li>
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>Aucun établissement pour le moment.</p>
+                    {% endif %}
                   </div>
                 </div>
               </article>
               <article id="tabs-2">
                 <div class="row">
                   <div class="col-md-6">
-                    <img src="{{ asset('assets/images/choose-us-image-02.png') }}" alt="Top Management">
+                    <img src="{{ asset('assets/images/choose-us-image-02.png') }}" alt="Nos Filières">
                   </div>
                   <div class="col-md-6">
-                    <h4>Top Level</h4>
-                    <p>Gérez facilement vos filières, établissements, mentors et rendez-vous depuis une interface simple et intuitive.</p>
-                    <p>Suspendisse tincidunt, magna ut finibus rutrum, libero dolor euismod odio, nec interdum quam felis non ante.</p>
+                    <h4>Nos Filières</h4>
+                    <p>{{ stats.filieresCount }} filières disponibles.</p>
+                    {% if filieres %}
+                    <ul>
+                    {% for filiere in filieres %}
+                      <li>{{ filiere.nom }}<br><small>{{ filiere.description|slice(0,100) ~ '...' }}</small></li>
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>Aucune filière pour le moment.</p>
+                    {% endif %}
                   </div>
                 </div>
               </article>
               <article id="tabs-3">
                 <div class="row">
                   <div class="col-md-6">
-                    <img src="{{ asset('assets/images/choose-us-image-03.png') }}" alt="Quality Meeting">
+                    <img src="{{ asset('assets/images/choose-us-image-03.png') }}" alt="Nos Mentors">
                   </div>
                   <div class="col-md-6">
-                    <h4>Quality Meeting</h4>
-                    <p>Planifiez des rendez-vous avec vos mentors et suivez votre progression scolaire en temps réel grâce à notre plateforme dédiée.</p>
+                    <h4>Nos Mentors</h4>
+                    <p>{{ stats.mentorsCount }} mentors experts.</p>
+                    {% if mentors %}
+                    <ul>
+                    {% for mentor in mentors %}
+                      <li>{{ mentor.profession }}<br><small>{{ mentor.bio|slice(0,100)|default('Bio non disponible') ~ '...' }}</small></li>
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>Aucun mentor pour le moment.</p>
+                    {% endif %}
                   </div>
                 </div>
               </article>
@@ -207,7 +226,7 @@
               <h6>Register your free account and <em>get immediate</em> access to online courses</h6>
             </div>
             {# Formulaire d'inscription — adapte l'action si tu as une route dédiée #}
-            <form id="register-form" action="#" method="post">
+            <form id="register-form" action="{{ path('app_user_control_new') }}" method="post">
               <input type="hidden" name="_token" value="{{ csrf_token('register') }}">
               <div class="row">
                 <div class="col-md-12">
@@ -249,161 +268,62 @@
         </div>
         <div class="owl-carousel owl-theme">
 
+          {% for filiere in filieres %}
           <div class="item">
-            <img src="{{ asset('assets/images/courses-01.jpg') }}" alt="Course Digital Marketing">
+            <img src="{{ asset('assets/images/courses-' ~ ((loop.index0 % 5) + 1) ~ '.jpg') }}" alt="Filière {{ filiere.nom }}">
             <div class="down-content">
-              <h4>Digital Marketing</h4>
-              <p>You can get free images and videos for your websites by visiting Unsplash, Pixabay, and Pexels.</p>
+              <h4>{{ filiere.nom }}</h4>
+              <p>{{ filiere.description|length > 0 ? filiere.description|slice(0, 150) ~ '...' : 'Description à venir.' }}</p>
               <div class="author-image">
-                <img src="{{ asset('assets/images/author-01.png') }}" alt="Author 1">
+                <img src="{{ asset('assets/images/author-' ~ ((loop.index0 % 5) + 1) ~ '.png') }}" alt="">
               </div>
               <div class="text-button-pay">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
+                <a href="{{ path('app_filiere_control_show', {'id': filiere.id}) }}">Voir <i class="fa fa-angle-double-right"></i></a>
               </div>
             </div>
           </div>
-
+          {% else %}
           <div class="item">
-            <img src="{{ asset('assets/images/courses-02.jpg') }}" alt="Course Business World">
-            <div class="down-content">
-              <h4>Business World</h4>
-              <p>Quisque cursus augue ut velit dictum, quis volutpat enim blandit. Maecenas a lectus ac ipsum porta.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-02.png') }}" alt="Author 2">
-              </div>
-              <div class="text-button-free">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
+            <h4 style="text-align: center; padding: 50px;">Aucune filière disponible pour le moment. <a href="{{ path('app_filiere_control_new') }}">Créez la première !</a></h4>
           </div>
-
-          <div class="item">
-            <img src="{{ asset('assets/images/courses-03.jpg') }}" alt="Course Media Technology">
-            <div class="down-content">
-              <h4>Media Technology</h4>
-              <p>Pellentesque ultricies diam magna, auctor cursus lectus pretium nec. Maecenas finibus lobortis enim.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-03.png') }}" alt="Author 3">
-              </div>
-              <div class="text-button-pay">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="{{ asset('assets/images/courses-04.jpg') }}" alt="Course Communications">
-            <div class="down-content">
-              <h4>Communications</h4>
-              <p>Download free images and videos for your websites by visiting Unsplash, Pixabay, and Pexels.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-04.png') }}" alt="Author 4">
-              </div>
-              <div class="text-button-free">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="{{ asset('assets/images/courses-05.jpg') }}" alt="Course Business Ethics">
-            <div class="down-content">
-              <h4>Business Ethics</h4>
-              <p>Pellentesque ultricies diam magna, auctor cursus lectus pretium nec. Maecenas finibus lobortis enim.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-05.png') }}" alt="Author 5">
-              </div>
-              <div class="text-button-pay">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="{{ asset('assets/images/courses-01.jpg') }}" alt="Course Photography">
-            <div class="down-content">
-              <h4>Photography</h4>
-              <p>Quisque cursus augue ut velit dictum, quis volutpat enim blandit. Maecenas a lectus ac ipsum porta.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-01.png') }}" alt="Author 1">
-              </div>
-              <div class="text-button-free">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="{{ asset('assets/images/courses-02.jpg') }}" alt="Course Web Development">
-            <div class="down-content">
-              <h4>Web Development</h4>
-              <p>Pellentesque ultricies diam magna, auctor cursus lectus pretium nec. Maecenas finibus lobortis enim.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-02.png') }}" alt="Author 2">
-              </div>
-              <div class="text-button-free">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="{{ asset('assets/images/courses-03.jpg') }}" alt="Course Learn HTML CSS">
-            <div class="down-content">
-              <h4>Learn HTML CSS</h4>
-              <p>You can get free images and videos for your websites by visiting Unsplash, Pixabay, and Pexels.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-03.png') }}" alt="Author 3">
-              </div>
-              <div class="text-button-pay">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="{{ asset('assets/images/courses-04.jpg') }}" alt="Course Social Media">
-            <div class="down-content">
-              <h4>Social Media</h4>
-              <p>Pellentesque ultricies diam magna, auctor cursus lectus pretium nec. Maecenas finibus lobortis enim.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-04.png') }}" alt="Author 4">
-              </div>
-              <div class="text-button-pay">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="{{ asset('assets/images/courses-05.jpg') }}" alt="Course Digital Arts">
-            <div class="down-content">
-              <h4>Digital Arts</h4>
-              <p>Quisque cursus augue ut velit dictum, quis volutpat enim blandit. Maecenas a lectus ac ipsum porta.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-05.png') }}" alt="Author 5">
-              </div>
-              <div class="text-button-free">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="{{ asset('assets/images/courses-01.jpg') }}" alt="Course Media Streaming">
-            <div class="down-content">
-              <h4>Media Streaming</h4>
-              <p>Pellentesque ultricies diam magna, auctor cursus lectus pretium nec. Maecenas finibus lobortis enim.</p>
-              <div class="author-image">
-                <img src="{{ asset('assets/images/author-01.png') }}" alt="Author 1">
-              </div>
-              <div class="text-button-pay">
-                <a href="{{ path('app_filiere_control_index') }}">Voir <i class="fa fa-angle-double-right"></i></a>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
 
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ESTABLISHMENTS ===== -->
+  <section class="section establishments" data-section="section4b">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="section-heading">
+            <h2>Our <em>Establishments</em></h2>
+          </div>
+        </div>
+      </div>
+      <div class="row establishments-row">
+        {% if etablissements %}
+          {% for etablissement in etablissements %}
+          <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="establishment-card">
+              <div class="establishment-content">
+                <h3>{{ etablissement.nom }}</h3>
+                <p class="location"><i class="fa fa-map-marker"></i> {{ etablissement.ville }}, {{ etablissement.pays }}</p>
+                <p class="description">{{ etablissement.description|default('Établissement de formation de qualité') }}</p>
+                <div class="establishment-footer">
+                  <a href="{{ path('app_etablissement_contol_show', {'id': etablissement.id}) }}" class="btn-visit">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-md-12">
+            <p style="text-align: center; color: #fff; font-size: 18px;">No establishments available at the moment.</p>
+          </div>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -415,8 +335,17 @@
         <div class="col-md-6 align-self-center">
           <div class="left-content">
             <span>our presentation is for you</span>
-            <h4>Watch the video to learn more <em>about Grad School</em></h4>
-            <p>Découvrez SchoolPrepar, la plateforme qui connecte les étudiants avec les meilleurs mentors et établissements. Prenez rendez-vous, suivez vos filières et préparez votre avenir scolaire en toute sérénité.
+            <h4>Watch the video to learn more <em>about SchoolPrepar</em></h4>
+            <p>Découvrez nos {{ stats.mentorsCount }} mentors experts.</p>
+                    {% if mentors %}
+                    <ul>
+                    {% for mentor in mentors %}
+                      <li><strong>{{ mentor.profession }}</strong> - {{ mentor.disponibilite|default('Disponible') }}</li>
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>Rejoignez nos mentors bientôt !</p>
+                    {% endif %}
             <br><br>Suspendisse tincidunt, magna ut finibus rutrum, libero dolor euismod odio, nec interdum quam felis non ante.</p>
             <div class="main-button">
               <a href="{{ path('app_mentor_control_index') }}">Voir les Mentors</a>

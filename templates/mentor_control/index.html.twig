@@ -1,40 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mentor index{% endblock %}
+{% block title %}Nos Mentors - {{ mentors|length }} disponibles{% endblock %}
 
 {% block body %}
-    <h1>Mentor index</h1>
+<section class=\"section main-banner\" style=\"background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ asset('assets/images/video-bg.jpg') }}');\">
+  <div class=\"video-overlay header-text\">
+    <div class=\"caption\">
+      <h6>SchoolPrepar</h6>
+      <h2><em>{{ mentors|length }}</em> Mentors</h2>
+      <div class=\"main-button\">
+        <a href=\"{{ path('app_mentor_control_new') }}\" class=\"btn btn-primary\">Nouveau Mentor</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <table class="table">
-        
-        <tbody>
+<section class=\"section courses\">
+  <div class=\"container-fluid\">
+    <div class=\"row\">
+      <div class=\"col-md-12\">
+        <div class=\"section-heading\">
+          <h2>Nos Mentors Experts</h2>
+        </div>
+      </div>
+      {% if mentors|length > 0 %}
+      <div class=\"owl-carousel owl-theme\">
         {% for mentor in mentors %}
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Profession</th>
-                    <th>Bio</th>
-                    <th>Disponibilite</th>
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tr>
-                <td>{{ mentor.id }}</td>
-                <td>{{ mentor.profession }}</td>
-                <td>{{ mentor.bio }}</td>
-                <td>{{ mentor.disponibilite }}</td>
-                <td>
-                    <a href="{{ path('app_mentor_control_show', {'id': mentor.id}) }}">show</a>
-                    <a href="{{ path('app_mentor_control_edit', {'id': mentor.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
+        <div class=\"item\">
+          <div class=\"down-content full-card\">
+            <h4 class=\"big-title\">{{ mentor.profession }}</h4>
+            <p class=\"bio\">{{ mentor.bio|slice(0, 150) ~ '...'|default('Expert passionné.') }}</p>
+            <span class=\"dispo-tag\">{{ mentor.disponibilite|default('Disponible') }}</span>
+            <span class=\"user-info\">Par {{ mentor.user.nom }} {{ mentor.user.prenom|default('') }}</span>
+            <div class=\"text-button-pay\">
+              <a href=\"{{ path('app_mentor_control_show', {'id': mentor.id}) }}\">Détails</a>
+              <a href=\"{{ path('app_mentor_control_edit', {'id': mentor.id}) }}\" class=\"btn btn-sm btn-warning ms-2\">Éditer</a>
+            </div>
+          </div>
+        </div>
         {% endfor %}
-        </tbody>
-    </table>
+      </div>
+      {% else %}
+      <div class=\"col-md-12 text-center py-5\">
+        <h3>Aucun mentor disponible</h3>
+        <a href=\"{{ path('app_mentor_control_new') }}\" class=\"btn btn-primary\">Créer le premier</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
 
-    <a href="{{ path('app_mentor_control_new') }}">Create new</a>
+<style>
+.full-card { padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); min-height: 350px; }
+.big-title { font-size: 2em; margin-bottom: 15px; color: #333; }
+.bio { font-size: 1.1em; color: #666; margin-bottom: 10px; line-height: 1.5; }
+.dispo-tag { color: #007bff; font-weight: bold; background: #cce7ff; padding: 5px 12px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+.user-info { color: #666; font-style: italic; }
+</style>
+
+<link rel=\"stylesheet\" href=\"{{ asset('assets/css/owl.css') }}\">
+<script src=\"{{ asset('assets/js/owl-carousel.js') }}\"></script>
+<script>
+$(document).ready(function(){
+  $(\".owl-carousel\").owlCarousel({
+    items: 3,
+    loop: true,
+    margin: 20,
+    nav: true,
+    responsive: {
+      0: { items: 1 },
+      768: { items: 2 },
+      992: { items: 3 }
+    }
+  });
+});
+</script>
 {% endblock %}

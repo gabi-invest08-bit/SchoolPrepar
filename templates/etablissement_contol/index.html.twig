@@ -1,40 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Etablissement index{% endblock %}
+{% block title %}Nos Établissements - {{ etablissements|length }} disponibles{% endblock %}
 
 {% block body %}
-    <h1>Etablissement index</h1>
+<section class=\"section main-banner\" style=\"background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ asset('assets/images/courses-bg.jpg') }}');\">
+  <div class=\"video-overlay header-text\">
+    <div class=\"caption\">
+      <h6>SchoolPrepar</h6>
+      <h2><em>{{ etablissements|length }}</em> Établissements</h2>
+      <div class=\"main-button\">
+        <a href=\"{{ path('app_etablissement_contol_new') }}\" class=\"btn btn-primary\">Nouvel Établissement</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <table class="table">
-        
-        <tbody>
+<section class=\"section courses\">
+  <div class=\"container-fluid\">
+    <div class=\"row\">
+      <div class=\"col-md-12\">
+        <div class=\"section-heading\">
+          <h2>Découvrez nos Établissements</h2>
+        </div>
+      </div>
+      {% if etablissements|length > 0 %}
+        <div class=\"owl-carousel owl-theme\">
         {% for etablissement in etablissements %}
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Ville</th>
-                    <th>Pays</th>
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tr>
-                <td>{{ etablissement.id }}</td>
-                <td>{{ etablissement.nom }}</td>
-                <td>{{ etablissement.ville }}</td>
-                <td>{{ etablissement.pays }}</td>
-                <td>
-                    <a href="{{ path('app_etablissement_contol_show', {'id': etablissement.id}) }}">show</a>
-                    <a href="{{ path('app_etablissement_contol_edit', {'id': etablissement.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">Pas d'Établissements</td>
-            </tr>
+        <div class=\"item\">
+          <div class=\"down-content full-card\">
+            <h4 class=\"big-title\">{{ etablissement.nom }}</h4>
+            <p class=\"location\"><i class=\"fa fa-map-marker\"></i> {{ etablissement.ville }}, {{ etablissement.pays }}</p>
+            <span class=\"filiere-tag\">Filière: {{ etablissement.filiere.nom }}</span>
+            <div class=\"text-button-pay\">
+              <a href=\"{{ path('app_etablissement_contol_show', {'id': etablissement.id}) }}\">Détails</a>
+              <a href=\"{{ path('app_etablissement_contol_edit', {'id': etablissement.id}) }}\" class=\"btn btn-sm btn-warning ms-2\">Éditer</a>
+            </div>
+          </div>
+        </div>
         {% endfor %}
-        </tbody>
-    </table>
+      </div>
+      {% else %}
+      <div class=\"col-md-12 text-center py-5\">
+        <h3>Aucun établissement disponible</h3>
+        <a href=\"{{ path('app_etablissement_contol_new') }}\" class=\"btn btn-primary\">Créer le premier</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
 
-    <a href="{{ path('app_etablissement_contol_new') }}">Create new</a>
+<style>
+.full-card { padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); min-height: 300px; }
+.big-title { font-size: 2em; margin-bottom: 10px; color: #333; }
+.location { font-size: 1.2em; color: #666; margin-bottom: 10px; }
+.filiere-tag { color: #28a745; font-weight: bold; background: #d4edda; padding: 5px 10px; border-radius: 20px; }
+.etabs-count { color: #ff6b6b; font-weight: bold; }
+</style>
+
+<link rel=\"stylesheet\" href=\"{{ asset('assets/css/owl.css') }}\">
+<script src=\"{{ asset('assets/js/owl-carousel.js') }}\"></script>
+<script>
+$(document).ready(function(){
+  $(\".owl-carousel\").owlCarousel({
+    items: 3,
+    loop: true,
+    margin: 10,
+    nav: true
+  });
+});
+</script>
 {% endblock %}
